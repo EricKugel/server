@@ -6,11 +6,26 @@ use std::convert::TryFrom;
 use std::error::Error;
 use std::fmt::{Result as FmtResult, Display, Debug, Formatter};
 use super::QueryString;
-    
+
+#[derive(Debug)]
 pub struct Request<'buffer> {
   path: &'buffer str,
   query_string: Option<QueryString<'buffer>>,
   method: Method
+}
+
+impl<'buffer> Request<'buffer> {
+  pub fn path(&self) -> &str {
+    &self.path
+  }
+
+  pub fn method(&self) -> &Method {
+    &self.method
+  }
+
+  pub fn query_string(&self) -> Option<&QueryString> {
+    self.query_string.as_ref()
+  }
 }
 
 impl<'buffer> TryFrom<&'buffer[u8]> for Request<'buffer> {
